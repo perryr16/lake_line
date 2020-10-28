@@ -23,8 +23,6 @@ const getTrails = async (req) => {
   const response = await fetch(urlTrail)
     .then(response => response.json())
 
-
-  // const keyResults = apiResults.trails.filter(trail => trail.name.includes(keyword))
   const keyResults = response.trails.filter(trail => trail.name.toLowerCase().includes(keyword))
 
   return { 'resultsLength': keyResults.length, 'results': keyResults }
@@ -33,9 +31,8 @@ const getTrails = async (req) => {
 const populateDB = async (req) => {
   const results = await getTrails(req)
   const newTrails = results["results"]
-  const formatTrails = []
-  newTrails.forEach( newTrail => 
-    formatTrails.push({
+  newTrails.forEach( async (newTrail) => {
+    const trailFormatted = {
       name: newTrail['name'],
       summary: newTrail['summary'],
       difficulty: newTrail['difficulty'],
@@ -51,47 +48,15 @@ const populateDB = async (req) => {
       high: newTrail['high'],
       low: newTrail['low'],
       conditionStatus: newTrail['conditionStatus'],
-    })
-  )
-  // console.log(formatTrails);
-  // const trail1 = await Trail.query().findById(1)
-  // console.log(trail1)
-  // console.log(formatTrails[1])
-  const trails = await Trail.query().insert(formatTrails)
-  
-  // return formatTrails
+    }
+    try {
+      await Trail.query().insert(trailFormatted)
+    } catch {
+    }
+  })
+  const trails = await Trail.query()
+
   return {results: trails.length, newTrails: trails}
 }
 
 module.exports = { getTrails, populateDB }
-
-
-// Trail.query().allowGraph('[name, description, lat, lon, length, rating, location, state]').insert(formatTrails)
-      // newTrails.forEach( newTrail => {  
-  //   let x = {    
-  //     name: newTrail['name'],
-  //     summary: newTrail['summary'],
-  //     difficulty: newTrail['difficulty'],
-  //     url: newTrail['url'],
-  //     imgMedium: newTrail['imgMedium'],
-  //     lat: newTrail['lat'],
-  //     lon: newTrail['lon'],
-  //     length: newTrail['length'],
-  //     stars: newTrail['stars'],
-  //     location: newTrail['location'],
-  //     ascent: newTrail['ascent'],
-  //     descent: newTrail['descent'],
-  //     high: newTrail['high'],
-  //     low: newTrail['low'],
-  //     conditionStatus: newTrail['conditionStatus'],
-  //   }
-
-    // const trail = await Trail.query().insert(x)
-
-  // })
-  // newTrails.forEach( (newTrail) => {
-  //   const trail = Trail.query()
-  //     // .allowGraph('[name, description, lat, lon, length, rating, location, state]')
-  //     .insert(newTrail)
-  //   }
-  // )
