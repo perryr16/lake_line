@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const parser = require('body-parser')
+const knex = require('knex')
 
 const trails = require('./controllers/trails')
 const getTrails = require('./controllers/getTrails')

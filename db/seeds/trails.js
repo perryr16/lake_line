@@ -6,6 +6,7 @@ exports.seed = function(knex, Promise) {
       {
         name: "test trail 1", 
         summary: "a trail",
+        difficulty: "wicked hard",
         lat: 10.1345,
         lon: -13.321,
         length: 3.2,
