@@ -3,7 +3,7 @@ const cors = require('cors')
 const parser = require('body-parser')
 
 const trails = require('./controllers/trails')
-const comments = require('./controllers/comments')
+const getTrails = require('./controllers/getTrails')
 
 require('dotenv').config()
 
@@ -17,7 +17,7 @@ app.set('view engine', 'hbs')
 
 app.use(cors())
 app.use('/trails', trails)
-app.use('/comments', comments)
+app.use('/getTrails', getTrails)
 
 app.listen(app.get('port'), () => {
   console.log('Listening on port 3000')

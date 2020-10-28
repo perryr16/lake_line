@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
 
 // Trail by Id
 router.get('/:id', async (req, res) => {
-  const trail = await Trail.query().findById(req.params.id).eager('comments')
+  const trail = await Trail.query().findById(req.params.id).withGraphFetched('comments')
   res.json(trail)
 })
 
@@ -46,5 +46,14 @@ router.delete('/:id/comments/:commentId', async (req, res) => {
 
   res.redirect(`/trails/${req.params.id}`)
 })
+
+// router.get('/populateDb/lat', async (req, res, next) => {
+//   try {
+//     if (!req.query.location) throw new Error('Search param (`location`) required')
+//     res.json(await mapquest.getLat(req.query.location))
+//   } catch (error) {
+//     res.json({error: error.message})
+//   }
+// })
 
 module.exports = router;
