@@ -4,7 +4,6 @@ const pg = require('pg')
 // pg.defaults.ssl = true
 
 module.exports = {
-  development: {
     client: 'pg',
     connection: {
       host: '127.0.0.1',
@@ -18,5 +17,4 @@ module.exports = {
     seeds: {
       directory: __dirname + '/db/seeds'
     }
-  },
 }
