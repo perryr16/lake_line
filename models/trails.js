@@ -11,18 +11,18 @@ class Trail extends Model {
     return 'trails'
   }
 
-  static get relationMappings () {
-    return {
-      comments: {
-        relation: Model.HasManyRelation,
-        modelClass: Comment,
-        join: {
-          from: 'trails.id',
-          to: 'comments.trails_id'
-        }
-      }
-    }
-  }
+  // static get relationMappings () {
+  //   return {
+  //     comments: {
+  //       relation: Model.HasManyRelation,
+  //       modelClass: Comment,
+  //       join: {
+  //         from: 'trails.id',
+  //         to: 'comments.trails_id'
+  //       }
+  //     }
+  //   }
+  // }
 }
 
 module.exports = { Trail }

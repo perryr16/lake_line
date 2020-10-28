@@ -1,9 +1,11 @@
 const express = require('express')
-const { Trail, Comment } = require('../models/schema')
+// const { Trail, Comment } = require('../models/schema')
+const { Trail } = require('../models/schema')
 const router = express.Router()
 const mapquest = require('../services/mapquest')
 const hikingProject = require('../services/hikingProject')
 const knexfile = require('../knexfile')
+const { json } = require('body-parser')
 
 router.get('/getLat', async (req, res, next) => {
   try {
@@ -34,7 +36,7 @@ router.get('/populateDB', async (req, res, next) => {
   try {
     res.json(await hikingProject.populateDB(req))
   } catch (error) {
-    res.json({ error: error.message })
+    res.json({ dog: 'dog', error: error.message })
   }
 })
 

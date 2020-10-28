@@ -6,7 +6,8 @@ const knexConnection = Knex(connection)
 
 Model.knex(knexConnection)
 
-const { Comment } = require('./comments')
+// const { Comment } = require('./comments')
 const { Trail } = require('./trails')
 
-module.exports = { Trail, Comment }
+// module.exports = { Trail, Comment }
+module.exports = { Trail }

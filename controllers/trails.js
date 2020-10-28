@@ -1,5 +1,6 @@
 const express = require('express')
-const { Trail, Comment } = require('../models/schema')
+const { Trail } = require('../models/schema')
+// const { Trail, Comment } = require('../models/schema')
 const router = express.Router()
 
 // All Trails
@@ -10,7 +11,8 @@ router.get('/', async (req, res) => {
 
 // Trail by Id
 router.get('/:id', async (req, res) => {
-  const trail = await Trail.query().findById(req.params.id).withGraphFetched('comments')
+  // const trail = await Trail.query().findById(req.params.id).withGraphFetched('comments')
+  const trail = await Trail.query().findById(req.params.id)
   res.json(trail)
 })
 
@@ -23,15 +25,15 @@ router.post('/', async (req, res) => {
   res.send(trail)
 } )
 
-// Create comment attatched to trail
-router.post('/:id/comments', async (req, res) => {
-  const trail = await Trail.query().findById(req.params.id)
-  await trail.$relatedQuery('comments')
-             .allowInsert('[comment, creator]')
-             .insert(req.body)
+// // Create comment attatched to trail
+// router.post('/:id/comments', async (req, res) => {
+//   const trail = await Trail.query().findById(req.params.id)
+//   await trail.$relatedQuery('comments')
+//              .allowInsert('[comment, creator]')
+//              .insert(req.body)
 
-  res.send(trail)
-})
+//   res.send(trail)
+// })
 
 // Delete trail by id
 router.delete('/:id', async (req, res) => {
@@ -40,12 +42,12 @@ router.delete('/:id', async (req, res) => {
   res.redirect('/trails')
 })
 
-// Delete comment
-router.delete('/:id/comments/:commentId', async (req, res) => {
-  await Comment.query().deleteById(req.params.commentId)
+// // Delete comment
+// router.delete('/:id/comments/:commentId', async (req, res) => {
+//   await Comment.query().deleteById(req.params.commentId)
 
-  res.redirect(`/trails/${req.params.id}`)
-})
+//   res.redirect(`/trails/${req.params.id}`)
+// })
 
 // router.get('/populateDb/lat', async (req, res, next) => {
 //   try {

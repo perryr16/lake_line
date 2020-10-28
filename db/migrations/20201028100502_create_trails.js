@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
       table.string('name')
       table.string('summary')
       table.string('difficulty')
-      table.string('url')
+      table.string('url').unique()
       table.string('imgMedium')
       table.float('lat')
       table.float('lon')

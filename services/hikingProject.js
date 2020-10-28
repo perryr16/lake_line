@@ -1,11 +1,7 @@
 const mapquest = require('./mapquest')
 const fetch = require('node-fetch')
 const url = require('url')
-const config = require('../knexfile.js')
-const knex = require('knex')(config);
 const { Trail } = require('../models/schema')
-const knexfile = require('../knexfile')
-
 
 
 const { TRAIL_KEY } = process.env
@@ -37,9 +33,9 @@ const getTrails = async (req) => {
 const populateDB = async (req) => {
   const results = await getTrails(req)
   const newTrails = results["results"]
-  newTrails.forEach( newTrail => {
-    // knex('trail').insert({
-    Trail.query().insert({
+  const formatTrails = []
+  newTrails.forEach( newTrail => 
+    formatTrails.push({
       name: newTrail['name'],
       summary: newTrail['summary'],
       difficulty: newTrail['difficulty'],
@@ -56,15 +52,46 @@ const populateDB = async (req) => {
       low: newTrail['low'],
       conditionStatus: newTrail['conditionStatus'],
     })
-  })
+  )
+  // console.log(formatTrails);
+  // const trail1 = await Trail.query().findById(1)
+  // console.log(trail1)
+  // console.log(formatTrails[1])
+  const trails = await Trail.query().insert(formatTrails)
+  
+  // return formatTrails
+  return {results: trails.length, newTrails: trails}
+}
+
+module.exports = { getTrails, populateDB }
+
+
+// Trail.query().allowGraph('[name, description, lat, lon, length, rating, location, state]').insert(formatTrails)
+      // newTrails.forEach( newTrail => {  
+  //   let x = {    
+  //     name: newTrail['name'],
+  //     summary: newTrail['summary'],
+  //     difficulty: newTrail['difficulty'],
+  //     url: newTrail['url'],
+  //     imgMedium: newTrail['imgMedium'],
+  //     lat: newTrail['lat'],
+  //     lon: newTrail['lon'],
+  //     length: newTrail['length'],
+  //     stars: newTrail['stars'],
+  //     location: newTrail['location'],
+  //     ascent: newTrail['ascent'],
+  //     descent: newTrail['descent'],
+  //     high: newTrail['high'],
+  //     low: newTrail['low'],
+  //     conditionStatus: newTrail['conditionStatus'],
+  //   }
+
+    // const trail = await Trail.query().insert(x)
+
+  // })
   // newTrails.forEach( (newTrail) => {
   //   const trail = Trail.query()
   //     // .allowGraph('[name, description, lat, lon, length, rating, location, state]')
   //     .insert(newTrail)
   //   }
   // )
-
-  return results["results"]
-}
-
-module.exports = { getTrails, populateDB }
