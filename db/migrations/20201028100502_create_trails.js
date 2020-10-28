@@ -1,7 +1,6 @@
 
 exports.up = function(knex, Promise) {
-  return Promise.all([
-    knex.schema.createTable('trails', table => {
+  return knex.schema.createTable('trails', table => {
       table.increments('id').primary()
       table.string('name')
       table.string('description')
@@ -12,11 +11,8 @@ exports.up = function(knex, Promise) {
       table.string('location')
       table.string('state')
     })
-  ])
 };
 
 exports.down = function(knex, Promise) {
-  return Promise.all([
-    knex.schema.dropTable('trails')
-  ])  
+  return knex.schema.dropTable('trails') 
 };
