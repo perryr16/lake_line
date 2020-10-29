@@ -6,7 +6,8 @@ const router = express.Router()
 // All Trails
 router.get('/', async (req, res) => {
   const trails = await Trail.query()
-  res.json(trails)
+  res.json({resultsLength: trails.length, results: trails})
+  // res.json(trails)
 })
 
 // Trail by Id
