@@ -6,20 +6,15 @@ const router = express.Router()
 const { raw } = require('objection')
 
 // All Trails
-router.get('/', async (req, res) => {
-  const trails = await Trail.query()
-  res.json({resultsLength: trails.length, results: trails})
-  // res.json(trails)
-})
-// Trails by location
-router.get('/byLocation', async (req, res, next) => {
-  try {
-    if (!req.query.location) throw new Error('Location param (`location`) is required')
+router.get('/', async (req, res, next) => {
+  if (!req.query.location) {
+    const trails = await Trail.query()
+    res.json({resultsLength: trails.length, results: trails})
+  } else {
     const locationTrails = await Trail.query().whereRaw("lower(location) LIKE '%' || LOWER(?) || '%'", `${req.query.location}`)
     res.json(locationTrails)
-  } catch (error) {
-    res.json({error: error.message})
   }
+  // res.json(trails)
 })
 // Trail by Id
 router.get('/:id', async (req, res) => {
