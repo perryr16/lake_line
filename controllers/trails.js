@@ -12,7 +12,7 @@ router.get('/', async (req, res, next) => {
     res.json({resultsLength: trails.length, results: trails})
   } else {
     const locationTrails = await Trail.query().whereRaw("lower(location) LIKE '%' || LOWER(?) || '%'", `${req.query.location}`)
-    res.json(locationTrails)
+    res.json({resultsLength: locationTrails.length, results:locationTrails})
   }
   // res.json(trails)
 })
