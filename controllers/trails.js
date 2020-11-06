@@ -11,12 +11,12 @@ router.get('/', async (req, res) => {
   res.json({resultsLength: trails.length, results: trails})
   // res.json(trails)
 })
-
-router.get('/byState', async (req, res, next) => {
+// Trails by location
+router.get('/byLocation', async (req, res, next) => {
   try {
-    if (!req.query.state) throw new Error('Location param (`state`) is required')
-    const stateTrails = await Trail.query().whereRaw("lower(location) LIKE '%' || LOWER(?) || '%'", `${req.query.state}`)
-    res.json(stateTrails)
+    if (!req.query.location) throw new Error('Location param (`location`) is required')
+    const locationTrails = await Trail.query().whereRaw("lower(location) LIKE '%' || LOWER(?) || '%'", `${req.query.location}`)
+    res.json(locationTrails)
   } catch (error) {
     res.json({error: error.message})
   }
