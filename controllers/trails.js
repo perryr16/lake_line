@@ -1,7 +1,9 @@
 const express = require('express')
 const { Trail } = require('../models/schema')
+const mapquest = require('../services/mapquest')
 // const { Trail, Comment } = require('../models/schema')
 const router = express.Router()
+const { raw } = require('objection')
 
 // All Trails
 router.get('/', async (req, res) => {
@@ -9,7 +11,16 @@ router.get('/', async (req, res) => {
   res.json({resultsLength: trails.length, results: trails})
   // res.json(trails)
 })
-
+// Trails by location
+router.get('/byLocation', async (req, res, next) => {
+  try {
+    if (!req.query.location) throw new Error('Location param (`location`) is required')
+    const locationTrails = await Trail.query().whereRaw("lower(location) LIKE '%' || LOWER(?) || '%'", `${req.query.location}`)
+    res.json(locationTrails)
+  } catch (error) {
+    res.json({error: error.message})
+  }
+})
 // Trail by Id
 router.get('/:id', async (req, res) => {
   // const trail = await Trail.query().findById(req.params.id).withGraphFetched('comments')
@@ -25,6 +36,7 @@ router.post('/', async (req, res) => {
                            .insert(newTrail)
   res.send(trail)
 } )
+
 
 // // Create comment attatched to trail
 // router.post('/:id/comments', async (req, res) => {
