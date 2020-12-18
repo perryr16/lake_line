@@ -7,12 +7,16 @@ const { raw } = require('objection')
 
 // All Trails
 router.get('/', async (req, res, next) => {
-  if (!req.query.location) {
-    const trails = await Trail.query()
-    res.json({resultsLength: trails.length, results: trails})
-  } else {
-    const locationTrails = await Trail.query().whereRaw("lower(location) LIKE '%' || LOWER(?) || '%'", `${req.query.location}`)
-    res.json({resultsLength: locationTrails.length, results:locationTrails})
+  try {
+    if (!req.query.location) {
+      const trails = await Trail.query()
+      res.json({resultsLength: trails.length, results: trails})
+    } else {
+      const locationTrails = await Trail.query().whereRaw("lower(location) LIKE '%' || LOWER(?) || '%'", `${req.query.location}`)
+      res.json({resultsLength: locationTrails.length, results:locationTrails})
+    }
+  } catch (error) {
+    res.json({error: error.message})
   }
   // res.json(trails)
 })
